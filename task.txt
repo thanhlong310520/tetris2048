@@ -1,0 +1,8 @@
+- map(grid 5x6)
+-sinh so (lượt đầu sinh ở hàng 3)
+- click vào hàng nào thì sẽ check vị trí hiện tại ở các hàng nó đã có số chưa
+	nếu có thì sẽ không được sập xuống
+	nếu chưa thì sập xuống. vào vị trí chưa có phần tử nào.
+- nhập vòa khi 2 só cạnh nhau = nhau vào vị trí mà click.
+- sau khi ăn thì các vị trí sẽ tiếp tục rơi xuống.
+- thua khi số lượng ô trống ở 1 trong các cột full.
