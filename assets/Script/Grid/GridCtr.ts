@@ -45,6 +45,12 @@ export class GridCtr extends Component {
         }
         let childSize = this.squareGridPrefab.getComponent(UITransform).contentSize.x;
         this.ui.setContentSize(new Size(childSize*this.colNumber,this.ui.contentSize.y));
+        this.scheduleOnce(()=>{
+            for(let j = 0 ; j < this.colNumber ; j++){
+                let v = new Vec3(this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.x,this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.y+childSize,1);
+                GameCtr.instance.listPointSpawn.push(v);
+            }
+        },0.01)
     }
     Sqawn(col : number,row : number){
         let sp = instantiate(this.squareGridPrefab);
@@ -69,9 +75,11 @@ export class GridCtr extends Component {
         let index = Math.floor(dis/childSize);
         if(index > this.colNumber-1) index = this.colNumber-1;
         if(index < 0) index = 0;
-        console.log(index);
+
+        GameCtr.instance.handleCurrentBlock.ChangePosBlock(index);
     }
     EndClick(evnet : EventTouch){
+        GameCtr.instance.handleCurrentBlock.EndChange();
 
     }
 }

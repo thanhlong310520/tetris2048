@@ -1,5 +1,6 @@
 import { _decorator, CCInteger, Component, Node } from 'cc';
 import { GameCtr } from '../Game/GameCtr';
+import { NumberBlockCtr } from '../Obj/NumberBlockCtr';
 const { ccclass, property } = _decorator;
 
 @ccclass('SquareGridCtr')
@@ -8,6 +9,8 @@ export class SquareGridCtr extends Component {
     row : number;
     @property(CCInteger)
     col : number;
+    @property(NumberBlockCtr)
+    numberBlockCtr : NumberBlockCtr;
     @property(Node)
     listNextSquare : Node[] = [];
     start() {
