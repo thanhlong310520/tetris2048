@@ -15,8 +15,6 @@ export class HandleCurrentBlock extends Component {
     normalSpeed : number = 2;
     @property(CCFloat)
     opacity : number = 100;
-
-    isPause : boolean;
     
     start() {
         input.on(Input.EventType.KEY_DOWN,this.OnClick,this)
@@ -34,7 +32,7 @@ export class HandleCurrentBlock extends Component {
         this.ChangePosBlock(GameCtr.instance.currentPoint);
         this.currentBlock.node.setWorldPosition(GameCtr.instance.listPointSpawn[GameCtr.instance.currentPoint]);
         this.currentBlock.SetVelocity(this.normalSpeed);
-        if(this.isPause) this.PauseBlock();
+        if(GameCtr.instance.isPause) this.PauseBlock();
     }
     OnClick(event : EventKeyboard){
         if(event.keyCode == KeyCode.SPACE){
@@ -42,6 +40,9 @@ export class HandleCurrentBlock extends Component {
         }
         if(event.keyCode == KeyCode.KEY_P){
             this.PauseBlock();
+        }
+        if(event.keyCode == KeyCode.KEY_S){
+            this.ContinueMoveBlock();
         }
     }
 
@@ -91,18 +92,23 @@ export class HandleCurrentBlock extends Component {
     
 
     PauseBlock(){
-        this.isPause = true;
+        GameCtr.instance.isPause = true;
         if(this.currentBlock == null) return;
         this.currentBlock.SetVelocity(0);
         this.currentBlock.canChange = false;
         this.currentBlock.uiOpacity.opacity = this.opacity;
     }
+    ContinueMoveBlock (){
+        GameCtr.instance.isPause = false;
+        if(this.currentBlock == null) return;
+        this.currentBlock.SetVelocity(this.normalSpeed);
+        this.currentBlock.canChange = true;
+        this.currentBlock.uiOpacity.opacity = 255;
+    }
 
     SetDefault(){
         if(this.currentBlock != null) this.currentBlock.node.destroy();
         this.currentBlock = null;
-        this.isPause = false;
-
     }
 }
 

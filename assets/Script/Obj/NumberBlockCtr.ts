@@ -58,7 +58,7 @@ export class NumberBlockCtr extends Component {
         tween(this.node).to(0.2,{worldPosition : this.squareDone.node.worldPosition}).call(()=>{
             //Check An
             this.squareDone.numberBlockCtr = this;
-            GameCtr.instance.handleCurrentBlock.currentBlock = null;
+            GameCtr.instance.CheckGameOver();
         }).start();
     }
 }

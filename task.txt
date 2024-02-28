@@ -6,3 +6,4 @@
 - nhập vòa khi 2 só cạnh nhau = nhau vào vị trí mà click.
 - sau khi ăn thì các vị trí sẽ tiếp tục rơi xuống.
 - thua khi số lượng ô trống ở 1 trong các cột full.
+- nó sập xuống thì check xem nó có ăn được hay không. nếu ăn được thì sẽ sập xuống 1 lần nữa. 

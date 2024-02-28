@@ -69,6 +69,7 @@ export class GridCtr extends Component {
     }
 
     Click(event : EventTouch){
+        if(GameCtr.instance.isPause) return;
         let pos = event.getUILocation();
         let dis = pos.x - this.node.worldPosition.x;
         let childSize = this.squareGridPrefab.getComponent(UITransform).contentSize.x;
@@ -79,6 +80,7 @@ export class GridCtr extends Component {
         GameCtr.instance.handleCurrentBlock.ChangePosBlock(index);
     }
     EndClick(evnet : EventTouch){
+        if(GameCtr.instance.isPause) return;
         GameCtr.instance.handleCurrentBlock.EndChange();
     }
     CollapseBlock(){
