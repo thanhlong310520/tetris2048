@@ -1,4 +1,4 @@
-import { _decorator, CCInteger, Component, EventTouch, instantiate, Layout, Node, Prefab, Size, size, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, CCInteger, Component, EventTouch, instantiate, Layout, Node, Prefab, Size, size, tween, UITransform, Vec2, Vec3 } from 'cc';
 import { SquareGridCtr } from './SquareGridCtr';
 import { GameCtr } from '../Game/GameCtr';
 const { ccclass, property } = _decorator;
@@ -44,10 +44,10 @@ export class GridCtr extends Component {
             }
         }
         let childSize = this.squareGridPrefab.getComponent(UITransform).contentSize.x;
-        this.ui.setContentSize(new Size(childSize*this.colNumber,this.ui.contentSize.y));
+        this.ui.setContentSize(new Size(childSize*this.colNumber + this.layout.spacingX*(this.colNumber-1),this.ui.contentSize.y));
         this.scheduleOnce(()=>{
             for(let j = 0 ; j < this.colNumber ; j++){
-                let v = new Vec3(this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.x,this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.y+childSize,1);
+                let v = new Vec3(this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.x,this.listSquareInGrid[j][this.rowNumber-1].node.worldPosition.y+childSize+this.layout.spacingY,1);
                 GameCtr.instance.listPointSpawn.push(v);
             }
         },0.01)
@@ -80,8 +80,26 @@ export class GridCtr extends Component {
     }
     EndClick(evnet : EventTouch){
         GameCtr.instance.handleCurrentBlock.EndChange();
-
     }
+    CollapseBlock(){
+        for(let i = 0 ; i < this.rowNumber-1 ; i++){
+            for(let j = 0 ; j < this.colNumber ; j++){
+                if(this.listSquareInGrid[j][i].numberBlockCtr == null){
+                    this.SetBlockForSquare(j,i);
+                }
+            }
+        }
+    }
+
+    SetBlockForSquare(col : number,row : number){
+        this.listSquareInGrid[col][row].numberBlockCtr = this.listSquareInGrid[col][row+1].numberBlockCtr;
+        this.listSquareInGrid[col][row+1].numberBlockCtr = null;
+        if(this.listSquareInGrid[col][row].numberBlockCtr != null){
+            tween(this.listSquareInGrid[col][row].numberBlockCtr.node).to(0.1,{
+                worldPosition : this.listSquareInGrid[col][row].node.worldPosition}).start();
+        }
+    }
+
 }
 
 

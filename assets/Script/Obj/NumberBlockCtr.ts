@@ -1,5 +1,6 @@
-import { _decorator, CCInteger, Collider, Collider2D, Component, Node, RigidBody2D, tween, UITransform, Vec2, Vec3 } from 'cc';
+import { _decorator, CCInteger, Collider, Collider2D, Component, Node, RigidBody2D, Sprite, tween, UIOpacity, UITransform, Vec2, Vec3 } from 'cc';
 import { SquareGridCtr } from '../Grid/SquareGridCtr';
+import { GameCtr } from '../Game/GameCtr';
 const { ccclass, property } = _decorator;
 
 @ccclass('NumberBlockCtr')
@@ -9,6 +10,9 @@ export class NumberBlockCtr extends Component {
 
     @property(Collider2D)
     collider : Collider2D;
+
+    @property(UIOpacity)
+    uiOpacity : UIOpacity;
     
     @property(CCInteger)
     id : number;
@@ -28,16 +32,10 @@ export class NumberBlockCtr extends Component {
     update(deltaTime: number) {
         if(this.isMove){
             if(this.squareDone == null) return;
-            if(this.node.worldPosition.y < this.squareDone.node.worldPosition.y+this.node.getComponent(UITransform).contentSize.x/2){
+            if(this.node.worldPosition.y < this.squareDone.node.worldPosition.y /*+this.node.getComponent(UITransform).contentSize.x/2 */){
                 this.SetDone();
-                this.isMove = false;
-                this.canChange = false;
             }
         }
-    }
-
-    SetInfor(){
-        
     }
 
     SetVelocity(v : number){
@@ -55,9 +53,12 @@ export class NumberBlockCtr extends Component {
     }
     SetDone(){
         this.SetVelocity(0);
+        this.isMove = false;
+        this.canChange = false;
         tween(this.node).to(0.2,{worldPosition : this.squareDone.node.worldPosition}).call(()=>{
             //Check An
             this.squareDone.numberBlockCtr = this;
+            GameCtr.instance.handleCurrentBlock.currentBlock = null;
         }).start();
     }
 }
